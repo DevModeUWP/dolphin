@@ -1876,7 +1876,10 @@ void ImGuiFrontend::RecurseFolder(std::string path)
       if (!file.is_regular_file())
         continue;
 
-      auto game = new UICommon::GameFile(file.path().string());
+      std::filesystem::path normalised = std::filesystem::path(file.path().string()).make_preferred();
+      std::string game_path = normalised.string();
+      std::replace(game_path.begin(), game_path.end(), '\\', '/');
+      auto game = new UICommon::GameFile(game_path);
 
       if (game && game->IsValid())
         m_games.emplace_back(std::move(game));

@@ -411,7 +411,10 @@ void ImGuiNetPlay::DrawSetup()
             m_search_results.clear();
             for (auto& game : m_games)
             {
-              auto& name = game->GetLongName();
+              std::string name = game->GetLongName();
+              if (name == "")
+                name = game->GetFileName();
+
               auto it = std::search(name.begin(), name.end(), search_phrase.begin(),
                                     search_phrase.end(),
                                     [](unsigned char ch1, unsigned char ch2) {
@@ -436,8 +439,12 @@ void ImGuiNetPlay::DrawSetup()
 
         for (auto& game : games)
         {
+          std::string name = game->GetLongName();
+          if (name == "")
+            name = game->GetFileName();
+
           if (ImGui::Selectable(
-                  std::format("{}##{}", game->GetLongName(), game->GetFilePath()).c_str(),
+                  std::format("{}##{}", name, game->GetFilePath()).c_str(),
                                 m_host_selected_game == game))
           {
             m_host_selected_game = game;
@@ -522,7 +529,7 @@ void ImGuiNetPlay::DrawSetup()
           else
           {
             g_netplay_server->ChangeGame(m_host_selected_game->GetSyncIdentifier(),
-                                         m_host_selected_game->GetLongName());
+                m_host_selected_game->GetNetPlayName(m_frontend->m_title_database));
 
             std::string host_ip = "127.0.0.1";
 

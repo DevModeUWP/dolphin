@@ -241,7 +241,7 @@ struct App : implements<App, IFrameworkViewSource, IFrameworkView>
   {
     g_shutdown_requested.Set();
   }
-#pragma optimize("", off)
+
   void OnActivate(const winrt::Windows::ApplicationModel::Core::CoreApplicationView&,
                   const winrt::Windows::ApplicationModel::Activation::IActivatedEventArgs& args)
   {
@@ -284,6 +284,7 @@ struct App : implements<App, IFrameworkViewSource, IFrameworkView>
         }
       }
     }
+
     UICommon::SetUserDirectory(UWP::GetUserLocation());
     UICommon::CreateDirectories();
     UICommon::Init();
@@ -298,7 +299,6 @@ struct App : implements<App, IFrameworkViewSource, IFrameworkView>
     CoreWindow window = CoreWindow::GetForCurrentThread();
     window.Activate();
   }
-#pragma optimize("", on)
 
     void EnteredBackground(const IInspectable&,
                            const winrt::Windows::ApplicationModel::EnteredBackgroundEventArgs& args)

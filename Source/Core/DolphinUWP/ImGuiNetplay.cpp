@@ -22,6 +22,7 @@
 #include "Core/BootManager.h"
 #include "Core/Config/NetplaySettings.h"
 #include "Core/SyncIdentifier.h"
+#include "Core/IOS/FS/FileSystem.h"
 
 #include "Common/WindowSystemInfo.h"
 #include "Common/HttpRequest.h"
@@ -839,6 +840,8 @@ void ImGuiNetPlay::SetChunkedProgress(int pid, u64 progress)
 
 void ImGuiNetPlay::SetHostWiiSyncData(std::vector<u64> titles, std::string redirect_folder)
 {
+  if (g_netplay_client)
+    g_netplay_client->SetWiiSyncData(nullptr, std::move(titles), std::move(redirect_folder));
 }
 
 }  // namespace ImGuiFrontend
